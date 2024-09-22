@@ -107,4 +107,9 @@
       <Filter>File di risorse</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\models\Cube.txt">
+      <Filter>File di risorse</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

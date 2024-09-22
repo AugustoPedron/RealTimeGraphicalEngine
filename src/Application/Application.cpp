@@ -3,7 +3,7 @@
 using namespace DirectX;
 using namespace std;
 
-#define USE_COLOR 0
+#define RENDER_TYPE 2 //0: COLOR, 1: TEXTURE, 2: LIGHT
 
 Application::Application()
 {
@@ -48,6 +48,7 @@ bool Application::Frame()
 
 bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
+	char modelFilename[128];
 	char textureFilename[128];
 	bool result;
 
@@ -69,10 +70,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
 	// Create and initialize the model object.
-	m_Model = make_unique<Model>();
-	
+	m_Model = make_unique<Model>();	
 
-#if USE_COLOR == 1
+#if RENDER_TYPE == 0
 	result = m_Model->Initialize(m_D3DHandler->GetDevice());
 
 	if (!result)
@@ -91,27 +91,30 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 #else
+	// Set the file name of the model.
+	strcpy_s(modelFilename, "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\cube.txt");
+
 	// Set the name of the texture file that we will be loading.
 	strcpy_s(textureFilename, "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\texture\\stone01.tga");
 
-	result = m_Model->Initialize(m_D3DHandler->GetDevice(), m_D3DHandler->GetDeviceContext(), textureFilename);
+	result = m_Model->Initialize(m_D3DHandler->GetDevice(), m_D3DHandler->GetDeviceContext(), modelFilename, textureFilename);
 
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
-
+#if RENDER_TYPE == 1
 	// Create and initialize the texture shader object.
-	/*m_TextureShader = make_unique<TextureShader>();
+	m_TextureShader = make_unique<TextureShader>();
 
 	result = m_TextureShader->Initialize(m_D3DHandler->GetDevice(), hwnd);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
 		return false;
-	}*/
-
+	}
+#else
 	// Create and initialize the light shader object.
 	m_LightShader = make_unique<LightShader>();
 
@@ -127,6 +130,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+#endif
 #endif
 
 	return true;
@@ -155,21 +159,21 @@ bool Application::Render(float rotation)
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_Model->Render(m_D3DHandler->GetDeviceContext());
 
-#if USE_COLOR == 1
+#if RENDER_TYPE == 0
 	// Render the model using the color shader.
 	result = m_ColorShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
 	if (!result)
 	{
 		return false;
 	}
-#else
+#elif RENDER_TYPE == 1
 	// Render the model using the texture shader.
-	/*result = m_TextureShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
+	result = m_TextureShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
 	if (!result)
 	{
 		return false;
-	}*/
-
+	}
+#elif RENDER_TYPE == 2
 	// Render the model using the light shader.
 	result = m_LightShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
 		m_Light->GetDirection(), m_Light->GetDiffuseColor());
