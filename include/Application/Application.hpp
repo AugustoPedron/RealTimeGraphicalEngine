@@ -5,7 +5,10 @@
 #include "Application/Camera.hpp"
 #include "D3DRendering/ColorShader.hpp"
 #include "D3DRendering/D3DHandler.hpp"
+#include "D3DRendering/LightShader.hpp"
+#include "D3DRendering/TextureShader.hpp"
 #include "Geometry/Model.hpp"
+#include "Lighting/Light.hpp"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -24,10 +27,13 @@ public:
 	bool Frame();
 
 private:
-	bool Render();
+	bool Render(float);
 
 	std::unique_ptr<D3DHandler> m_D3DHandler;
 	std::unique_ptr<Camera> m_Camera;
 	std::unique_ptr<Model> m_Model;
 	std::unique_ptr<ColorShader> m_ColorShader;
+	std::unique_ptr<TextureShader> m_TextureShader;
+	std::unique_ptr<LightShader> m_LightShader;
+	std::unique_ptr<Light> m_Light;
 };

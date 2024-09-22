@@ -136,22 +136,34 @@
     <ClCompile Include="src\Application\Camera.cpp" />
     <ClCompile Include="src\D3DRendering\ColorShader.cpp" />
     <ClCompile Include="src\D3DRendering\D3DHandler.cpp" />
+    <ClCompile Include="src\D3DRendering\LightShader.cpp" />
+    <ClCompile Include="src\D3DRendering\TextureShader.cpp" />
     <ClCompile Include="src\Geometry\Model.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
+    <ClCompile Include="src\Lighting\Light.cpp" />
     <ClCompile Include="src\System\System.cpp" />
+    <ClCompile Include="src\Texture\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application\Application.hpp" />
     <ClInclude Include="include\Application\Camera.hpp" />
     <ClInclude Include="include\D3DRendering\ColorShader.hpp" />
     <ClInclude Include="include\D3DRendering\D3DHandler.hpp" />
+    <ClInclude Include="include\D3DRendering\LightShader.hpp" />
+    <ClInclude Include="include\D3DRendering\TextureShader.hpp" />
     <ClInclude Include="include\Geometry\Model.hpp" />
     <ClInclude Include="include\Input\Input.hpp" />
+    <ClInclude Include="include\Lighting\Light.hpp" />
     <ClInclude Include="include\System\System.hpp" />
+    <ClInclude Include="include\Texture\Texture.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Color.ps" />
     <None Include="shaders\Color.vs" />
+    <None Include="shaders\Light.ps" />
+    <None Include="shaders\Light.vs" />
+    <None Include="shaders\Texture.ps" />
+    <None Include="shaders\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

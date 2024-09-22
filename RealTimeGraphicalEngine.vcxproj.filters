@@ -39,6 +39,18 @@
     <ClCompile Include="src\D3DRendering\ColorShader.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="src\D3DRendering\TextureShader.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\Texture.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lighting\Light.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\D3DRendering\LightShader.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\System\System.hpp">
@@ -62,12 +74,36 @@
     <ClInclude Include="include\Geometry\Model.hpp">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="include\D3DRendering\TextureShader.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture\Texture.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\D3DRendering\LightShader.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lighting\Light.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Color.ps">
       <Filter>File di risorse</Filter>
     </None>
     <None Include="shaders\Color.vs">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="shaders\Texture.ps">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="shaders\Texture.vs">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="shaders\Light.ps">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="shaders\Light.vs">
       <Filter>File di risorse</Filter>
     </None>
   </ItemGroup>

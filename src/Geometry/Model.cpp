@@ -1,11 +1,13 @@
 #include "Geometry/Model.hpp"
 
 using namespace DirectX;
+using namespace std;
 
 Model::Model()
 {
-	m_vertexBuffer = 0;
-	m_indexBuffer = 0;
+	m_indexBuffer = nullptr;
+	m_texture = nullptr;
+	m_vertexBuffer = nullptr;
 }
 
 Model::Model(const Model& other)
@@ -20,6 +22,11 @@ Model::~Model()
 int Model::GetIndexCount()
 {
 	return m_indexCount;
+}
+
+ID3D11ShaderResourceView* Model::GetTexture()
+{
+	return m_texture->GetTexture();
 }
 
 bool Model::Initialize(ID3D11Device* device)
@@ -37,9 +44,31 @@ bool Model::Initialize(ID3D11Device* device)
 	return true;
 }
 
+bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename)
+{
+	bool result;
+
+
+	// Initialize the vertex and index buffers.
+	result = InitializeBuffers(device);
+	if (!result)
+	{
+		return false;
+	}
+
+	// Load the texture for this model.
+	result = LoadTexture(device, deviceContext, textureFilename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool Model::InitializeBuffers(ID3D11Device* device)
 {
-	VertexType* vertices;
+	VertexTypeTexture* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -52,7 +81,7 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 	m_indexCount = 3;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new VertexTypeTexture[m_vertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -67,13 +96,16 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 
 	// Load the vertex array with data.
 	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
+	vertices[0].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 
 	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].texture = XMFLOAT2(0.5f, 0.0f);
+	vertices[1].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 
 	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
+	vertices[2].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 
 	// Load the index array with data.
 	indices[0] = 0;  // Bottom left.
@@ -82,7 +114,7 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexTypeTexture) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -130,6 +162,35 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 	return true;
 }
 
+bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+{
+	bool result;
+
+	// Create and initialize the texture object.
+	m_texture = make_unique<Texture>();
+
+	result = m_texture->Initialize(device, deviceContext, filename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void Model::ReleaseTexture()
+{
+	// Release the texture object.
+	if (m_texture)
+	{
+		m_texture->Shutdown();
+		m_texture.reset();
+		m_texture = nullptr;
+	}
+
+	return;
+}
+
 void Model::Render(ID3D11DeviceContext* deviceContext)
 {
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
@@ -145,7 +206,7 @@ void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(VertexType);
+	stride = sizeof(VertexTypeTexture);
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
@@ -162,6 +223,9 @@ void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 void Model::Shutdown()
 {
+	// Release the model texture.
+	ReleaseTexture();
+
 	// Shutdown the vertex and index buffers.
 	ShutdownBuffers();
 
