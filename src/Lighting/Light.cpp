@@ -17,6 +17,11 @@ Light::~Light()
 {
 }
 
+void Light::SetAmbientColor(float red, float green, float blue, float alpha)
+{
+  m_ambientColor = XMFLOAT4(red, green, blue, alpha);
+  return;
+}
 
 void Light::SetDiffuseColor(float red, float green, float blue, float alpha)
 {
@@ -31,6 +36,10 @@ void Light::SetDirection(float x, float y, float z)
   return;
 }
 
+XMFLOAT4 Light::GetAmbientColor()
+{
+  return m_ambientColor;
+}
 
 XMFLOAT4 Light::GetDiffuseColor()
 {
