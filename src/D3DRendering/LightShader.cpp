@@ -295,7 +295,7 @@ void LightShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCoun
   return;
 }
 
-bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
+bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX& worldMatrix, const XMMATRIX& viewMatrix, const XMMATRIX& projectionMatrix,
   ID3D11ShaderResourceView* texture, const XMFLOAT3& lightDirection, const XMFLOAT4& diffuseColor)
 {
   HRESULT result;
@@ -303,12 +303,6 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   unsigned int bufferNumber;
   MatrixBufferType* dataPtr;
   LightBufferType* dataPtr2;
-
-
-  // Transpose the matrices to prepare them for the shader.
-  worldMatrix = XMMatrixTranspose(worldMatrix);
-  viewMatrix = XMMatrixTranspose(viewMatrix);
-  projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -320,10 +314,10 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;
 
-  // Copy the matrices into the constant buffer.
-  dataPtr->world = worldMatrix;
-  dataPtr->view = viewMatrix;
-  dataPtr->projection = projectionMatrix;
+  // Transpose and copy the matrices into the constant buffer.
+  dataPtr->world = XMMatrixTranspose(worldMatrix);
+  dataPtr->view = XMMatrixTranspose(viewMatrix);
+  dataPtr->projection = XMMatrixTranspose(projectionMatrix);
 
   // Unlock the constant buffer.
   deviceContext->Unmap(m_matrixBuffer, 0);

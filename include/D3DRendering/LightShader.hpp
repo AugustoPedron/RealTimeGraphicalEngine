@@ -36,7 +36,7 @@ private:
   void ShutdownShader();
   void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
 
-  bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&);
+  bool SetShaderParameters(ID3D11DeviceContext*, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&);
   void RenderShader(ID3D11DeviceContext*, int);
 
 private:
