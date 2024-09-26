@@ -111,5 +111,8 @@
     <Text Include="data\models\Cube.txt">
       <Filter>File di risorse</Filter>
     </Text>
+    <Text Include="data\models\Sphere.txt">
+      <Filter>File di risorse</Filter>
+    </Text>
   </ItemGroup>
 </Project>

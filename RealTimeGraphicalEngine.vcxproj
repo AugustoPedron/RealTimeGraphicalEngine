@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt" />
+    <Text Include="data\models\Sphere.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,13 @@
 #include "Application/Application.hpp"
 
+#define RENDER_TYPE 2 //0: COLOR, 1: TEXTURE, 2: LIGHT
+
 using namespace DirectX;
 using namespace std;
 
-#define RENDER_TYPE 2 //0: COLOR, 1: TEXTURE, 2: LIGHT
+const char* cube_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\Cube.txt";
+const char* sphere_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\Sphere.txt";
+const char* texture_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\texture\\stone01.tga";
 
 Application::Application()
 {
@@ -67,7 +71,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera = make_unique<Camera>();
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -7.0f);
 
 	// Create and initialize the model object.
 	m_Model = make_unique<Model>();	
@@ -92,10 +96,10 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 #else
 	// Set the file name of the model.
-	strcpy_s(modelFilename, "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\cube.txt");
+	strcpy_s(modelFilename, sphere_file_path);
 
 	// Set the name of the texture file that we will be loading.
-	strcpy_s(textureFilename, "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\texture\\stone01.tga");
+	strcpy_s(textureFilename, texture_file_path);
 
 	result = m_Model->Initialize(m_D3DHandler->GetDevice(), m_D3DHandler->GetDeviceContext(), modelFilename, textureFilename);
 
@@ -130,7 +134,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(1.0f, 0.0f, 0.0f);
+	m_Light->SetDirection(1.0f, 0.0f, 1.0f);
+	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetSpecularPower(32.0f);
 #endif
 #endif
 
@@ -192,7 +198,7 @@ bool Application::Render(float rotation)
 
 	// Render the model using the light shader.
 	result = m_LightShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-		m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+		m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 	if (!result)
 	{
 		return false;
@@ -211,7 +217,7 @@ bool Application::Render(float rotation)
 
 	// Render the model using the light shader.
 	result = m_LightShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-		m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+		m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 	if (!result)
 	{
 		return false;
