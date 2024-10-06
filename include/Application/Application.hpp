@@ -36,4 +36,6 @@ private:
 	std::unique_ptr<TextureShader> m_TextureShader;
 	std::unique_ptr<LightShader> m_LightShader;
 	std::unique_ptr<Light> m_Light;
+	std::vector<std::shared_ptr<Light>> m_Lights;
+	int m_numLights;
 };

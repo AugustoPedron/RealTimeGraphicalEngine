@@ -1,11 +1,13 @@
 #include "Application/Application.hpp"
 
 #define RENDER_TYPE 2 //0: COLOR, 1: TEXTURE, 2: LIGHT
+#define USE_MULTIPLE_LIGHTS 1
 
 using namespace DirectX;
 using namespace std;
 
 const char* cube_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\Cube.txt";
+const char* plane_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\Plane.txt";
 const char* sphere_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\models\\Sphere.txt";
 const char* texture_file_path = "D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\texture\\stone01.tga";
 
@@ -71,7 +73,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera = make_unique<Camera>();
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -7.0f);
+	m_Camera->SetPosition(0.0f, 7.0f, -14.0f);
+	m_Camera->SetRotation(18.0f, 0.0f, 0.0f);
+	m_Camera->Render();
 
 	// Create and initialize the model object.
 	m_Model = make_unique<Model>();	
@@ -96,7 +100,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 #else
 	// Set the file name of the model.
-	strcpy_s(modelFilename, sphere_file_path);
+	strcpy_s(modelFilename, plane_file_path);
 
 	// Set the name of the texture file that we will be loading.
 	strcpy_s(textureFilename, texture_file_path);
@@ -129,6 +133,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+#if USE_MULTIPLE_LIGHTS == 0
 	// Create and initialize the light object.
 	m_Light = make_unique<Light>();
 
@@ -137,6 +142,30 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetDirection(1.0f, 0.0f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetSpecularPower(32.0f);
+#else
+	// Set the number of lights we will use.
+	m_numLights = 4;
+
+	// Create and initialize the light objects array.
+	m_Lights.reserve(m_numLights);
+
+	// Manually set the color and position of each light.
+	m_Lights.emplace_back(make_shared<Light>());
+	m_Lights[0]->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);  // Red
+	m_Lights[0]->SetPosition(-3.0f, 1.0f, 3.0f);
+
+	m_Lights.emplace_back(make_shared<Light>());
+	m_Lights[1]->SetDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);  // Green
+	m_Lights[1]->SetPosition(3.0f, 1.0f, 3.0f);
+
+	m_Lights.emplace_back(make_shared<Light>());
+	m_Lights[2]->SetDiffuseColor(0.0f, 0.0f, 1.0f, 1.0f);  // Blue
+	m_Lights[2]->SetPosition(-3.0f, 1.0f, -3.0f);
+
+	m_Lights.emplace_back(make_shared<Light>());
+	m_Lights[3]->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);  // White
+	m_Lights[3]->SetPosition(3.0f, 1.0f, -3.0f);
+#endif
 #endif
 #endif
 
@@ -146,19 +175,22 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 bool Application::Render(float rotation)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, rotateMatrix, translateMatrix, scaleMatrix, srMatrix;
+#if USE_MULTIPLE_LIGHTS == 1
+	XMFLOAT4 diffuseColor[4], lightPosition[4];
+	int i;
+#endif
 	bool result;
-
 
 	// Clear the buffers to begin the scene.
 	m_D3DHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
-	m_Camera->Render();
+	//m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_D3DHandler->GetWorldMatrix(worldMatrix);
-	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3DHandler->GetProjectionMatrix(projectionMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
 
 #if RENDER_TYPE == 0
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
@@ -187,6 +219,7 @@ bool Application::Render(float rotation)
 		return false;
 	}
 #elif RENDER_TYPE == 2
+#if USE_MULTIPLE_LIGHTS == 0
 	rotateMatrix = XMMatrixRotationY(rotation);  // Build the rotation matrix.
 	translateMatrix = XMMatrixTranslation(-2.0f, 0.0f, 0.0f);  // Build the translation matrix.
 
@@ -222,6 +255,28 @@ bool Application::Render(float rotation)
 	{
 		return false;
 	}
+#else
+	// Get the light properties.
+	for (i = 0; i < m_numLights; i++)
+	{
+		// Create the diffuse color array from the four light colors.
+		diffuseColor[i] = m_Lights[i]->GetDiffuseColor();
+
+		// Create the light position array from the four light positions.
+		lightPosition[i] = m_Lights[i]->GetPosition();
+	}
+
+	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	m_Model->Render(m_D3DHandler->GetDeviceContext());
+
+	// Render the model using the light shader.
+	result = m_LightShader->Render(m_D3DHandler->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+		diffuseColor, lightPosition);
+	if (!result)
+	{
+		return false;
+	}
+#endif
 #endif
 
 	// Present the rendered scene to the screen.
@@ -232,6 +287,10 @@ bool Application::Render(float rotation)
 
 void Application::Shutdown()
 {
+	if (m_Lights.size() > 0) {
+		m_Lights.clear();
+	}
+
 	// Release the light object.
 	if (m_Light)
 	{

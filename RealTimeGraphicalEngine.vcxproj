@@ -162,11 +162,14 @@
     <None Include="shaders\Color.vs" />
     <None Include="shaders\Light.ps" />
     <None Include="shaders\Light.vs" />
+    <None Include="shaders\MultipleLights.ps" />
+    <None Include="shaders\MultipleLights.vs" />
     <None Include="shaders\Texture.ps" />
     <None Include="shaders\Texture.vs" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt" />
+    <Text Include="data\models\Plane.txt" />
     <Text Include="data\models\Sphere.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

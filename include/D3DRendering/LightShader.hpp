@@ -8,6 +8,8 @@
 #define WORLD_VIEW_PROJ_MATRIX_BUFFER 0
 #define CAMERA_BUFFER 1
 
+const int NUM_LIGHTS = 4;
+
 class LightShader
 {
 private:
@@ -33,24 +35,37 @@ private:
     DirectX::XMFLOAT4 specularColor;
   };
 
+  struct LightColorBufferType
+  {
+    DirectX::XMFLOAT4 diffuseColor[NUM_LIGHTS];
+  };
+
+  struct LightPositionBufferType
+  {
+    DirectX::XMFLOAT4 lightPosition[NUM_LIGHTS];
+  };
+
 public:
   LightShader();
   LightShader(const LightShader&);
   ~LightShader();
 
-  bool Initialize(ID3D11Device*, HWND);
-  void Shutdown();
+  bool Initialize(ID3D11Device*, HWND);  
+  bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT4[], const DirectX::XMFLOAT4[]);
   bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
     const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, float);
+  void Shutdown();
+  
 
 private:
   bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);
-  void ShutdownShader();
   void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
-
+  void RenderShader(ID3D11DeviceContext*, int);
+  bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT4[], const DirectX::XMFLOAT4[]);
   bool SetShaderParameters(ID3D11DeviceContext*, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
      const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, float);
-  void RenderShader(ID3D11DeviceContext*, int);
+  void ShutdownShader();
+  
 
 private:
   ID3D11VertexShader* m_vertexShader;
@@ -60,4 +75,6 @@ private:
   ID3D11Buffer* m_matrixBuffer;
   ID3D11Buffer* m_lightBuffer;
   ID3D11Buffer* m_cameraBuffer;
+  ID3D11Buffer* m_lightColorBuffer;
+  ID3D11Buffer* m_lightPositionBuffer;
 };

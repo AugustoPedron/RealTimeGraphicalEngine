@@ -10,11 +10,24 @@ Light::Light()
 
 Light::Light(const Light& other)
 {
+  m_ambientColor = other.m_ambientColor;
+  m_diffuseColor = other.m_diffuseColor;
+  m_specularColor = other.m_specularColor;
+  m_position = other.m_position;
+  m_direction = other.m_direction;
+  m_specularPower = other.m_specularPower;
 }
 
-
-Light::~Light()
+Light& Light::operator=(const Light& other)
 {
+  m_ambientColor = other.m_ambientColor;
+  m_diffuseColor = other.m_diffuseColor;
+  m_specularColor = other.m_specularColor;
+  m_position = other.m_position;
+  m_direction = other.m_direction;
+  m_specularPower = other.m_specularPower;
+
+  return *this;
 }
 
 XMFLOAT4 Light::GetAmbientColor()
@@ -32,6 +45,12 @@ XMFLOAT3 Light::GetDirection()
 {
   return m_direction;
 }
+
+XMFLOAT4 Light::GetPosition()
+{
+  return m_position;
+}
+
 
 XMFLOAT4 Light::GetSpecularColor()
 {
@@ -60,6 +79,12 @@ void Light::SetDiffuseColor(float red, float green, float blue, float alpha)
 void Light::SetDirection(float x, float y, float z)
 {
   m_direction = XMFLOAT3(x, y, z);
+  return;
+}
+
+void Light::SetPosition(float x, float y, float z)
+{
+  m_position = XMFLOAT4(x, y, z, 1.0f);
   return;
 }
 

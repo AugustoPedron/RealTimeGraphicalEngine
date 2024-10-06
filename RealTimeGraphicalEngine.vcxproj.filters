@@ -106,12 +106,21 @@
     <None Include="shaders\Light.vs">
       <Filter>File di risorse</Filter>
     </None>
+    <None Include="shaders\MultipleLights.ps">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="shaders\MultipleLights.vs">
+      <Filter>File di risorse</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">
       <Filter>File di risorse</Filter>
     </Text>
     <Text Include="data\models\Sphere.txt">
+      <Filter>File di risorse</Filter>
+    </Text>
+    <Text Include="data\models\Plane.txt">
       <Filter>File di risorse</Filter>
     </Text>
   </ItemGroup>
