@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <directxmath.h>
 #include <fstream>
+#include <vector>
 
 #define WORLD_VIEW_PROJ_MATRIX_BUFFER 0
 #define CAMERA_BUFFER 1
@@ -51,7 +52,8 @@ public:
   ~LightShader();
 
   bool Initialize(ID3D11Device*, HWND);  
-  bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT4[], const DirectX::XMFLOAT4[]);
+  bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
+    const std::vector<DirectX::XMFLOAT4>&, const std::vector<DirectX::XMFLOAT4>&);
   bool Render(ID3D11DeviceContext*, int, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
     const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, float);
   void Shutdown();
@@ -61,7 +63,8 @@ private:
   bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*);
   void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
   void RenderShader(ID3D11DeviceContext*, int);
-  bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, const DirectX::XMFLOAT4[], const DirectX::XMFLOAT4[]);
+  bool SetShaderParameters(ID3D11DeviceContext*, DirectX::XMMATRIX&, DirectX::XMMATRIX&, DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
+    const std::vector<DirectX::XMFLOAT4>&, const std::vector<DirectX::XMFLOAT4>&);
   bool SetShaderParameters(ID3D11DeviceContext*, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, const DirectX::XMMATRIX&, ID3D11ShaderResourceView*, 
      const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT4&, const DirectX::XMFLOAT3&, const DirectX::XMFLOAT4&, float);
   void ShutdownShader();

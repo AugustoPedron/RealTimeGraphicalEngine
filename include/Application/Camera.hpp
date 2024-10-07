@@ -1,5 +1,6 @@
 #pragma once
 
+#include <d3d11.h>
 #include <directxmath.h>
 
 class Camera
@@ -9,8 +10,8 @@ public:
 	Camera(const Camera&);
 	~Camera();
 
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
+	void SetPosition(const DirectX::XMFLOAT3&);
+	void SetRotation(const DirectX::XMFLOAT3&);
 
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotation();
@@ -19,7 +20,7 @@ public:
 	void GetViewMatrix(DirectX::XMMATRIX&);
 
 private:
-	float m_positionX, m_positionY, m_positionZ;
-	float m_rotationX, m_rotationY, m_rotationZ;
+	DirectX::XMFLOAT3 m_position;
+	DirectX::XMFLOAT3 m_rotation;
 	DirectX::XMMATRIX m_viewMatrix;
 };

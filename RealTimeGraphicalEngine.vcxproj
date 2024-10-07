@@ -134,6 +134,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Application\Camera.cpp" />
+    <ClCompile Include="src\Application\Scene.cpp" />
     <ClCompile Include="src\D3DRendering\ColorShader.cpp" />
     <ClCompile Include="src\D3DRendering\D3DHandler.cpp" />
     <ClCompile Include="src\D3DRendering\LightShader.cpp" />
@@ -142,11 +143,15 @@
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Lighting\Light.cpp" />
     <ClCompile Include="src\System\System.cpp" />
+    <ClCompile Include="src\System\Timer.cpp" />
+    <ClCompile Include="src\Texture\BitMap.cpp" />
+    <ClCompile Include="src\Texture\Sprite.cpp" />
     <ClCompile Include="src\Texture\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application\Application.hpp" />
     <ClInclude Include="include\Application\Camera.hpp" />
+    <ClInclude Include="include\Application\Scene.hpp" />
     <ClInclude Include="include\D3DRendering\ColorShader.hpp" />
     <ClInclude Include="include\D3DRendering\D3DHandler.hpp" />
     <ClInclude Include="include\D3DRendering\LightShader.hpp" />
@@ -155,6 +160,9 @@
     <ClInclude Include="include\Input\Input.hpp" />
     <ClInclude Include="include\Lighting\Light.hpp" />
     <ClInclude Include="include\System\System.hpp" />
+    <ClInclude Include="include\System\Timer.hpp" />
+    <ClInclude Include="include\Texture\BitMap.hpp" />
+    <ClInclude Include="include\Texture\Sprite.hpp" />
     <ClInclude Include="include\Texture\Texture.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +179,14 @@
     <Text Include="data\models\Cube.txt" />
     <Text Include="data\models\Plane.txt" />
     <Text Include="data\models\Sphere.txt" />
+    <Text Include="data\sprite\sprite_data_01.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\sprite\sprite01.tga" />
+    <Image Include="data\sprite\sprite02.tga" />
+    <Image Include="data\sprite\sprite03.tga" />
+    <Image Include="data\sprite\sprite04.tga" />
+    <Image Include="data\texture\stone01.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

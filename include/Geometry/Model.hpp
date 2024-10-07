@@ -4,6 +4,7 @@
 #include <directxmath.h>
 #include <fstream>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "Texture/Texture.hpp"
@@ -38,8 +39,8 @@ public:
 	~Model();
 
 	bool Initialize(ID3D11Device*); //simple initialize
-	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*); //initialize with texture
-	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*); //initialize with texture and model
+	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, const char*); //initialize with texture
+	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, const char*, const char*); //initialize with texture and model
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 
@@ -48,8 +49,8 @@ public:
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
-	bool LoadModel(char*);
-	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
+	bool LoadModel(const char*);
+	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, const char*);
 	void ReleaseModel();
 	void ReleaseTexture();
 	void RenderBuffers(ID3D11DeviceContext*);
@@ -59,4 +60,5 @@ private:
 	std::unique_ptr<Texture> m_texture;
 	std::vector<ModelType> m_model;
 	long m_vertexCount, m_indexCount;
+	std::string m_modelFilename, m_textureFilename;
 };

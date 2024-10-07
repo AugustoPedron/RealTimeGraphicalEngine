@@ -20,7 +20,7 @@ public:
   Texture(const Texture&);
   ~Texture();
 
-  bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*);
+  bool Initialize(ID3D11Device*, ID3D11DeviceContext*, const char*);
   void Shutdown();
 
   ID3D11ShaderResourceView* GetTexture();
@@ -29,7 +29,7 @@ public:
   int GetHeight();
 
 private:
-  bool LoadTarga32Bit(char*);
+  bool LoadTarga32Bit(const char*);
 
   unsigned char* m_targaData;
   ID3D11Texture2D* m_texture;

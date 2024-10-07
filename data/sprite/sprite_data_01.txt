@@ -1,0 +1,6 @@
+4
+D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\sprite\\sprite01.tga
+D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\sprite\\sprite02.tga
+D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\sprite\\sprite03.tga
+D:\\ProgettiPersonali\\RealTimeGraphicalEngine\\data\\sprite\\sprite04.tga
+250

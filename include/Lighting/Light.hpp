@@ -18,11 +18,11 @@ public:
   DirectX::XMFLOAT4 GetSpecularColor();
   float GetSpecularPower();
 
-  void SetAmbientColor(float, float, float, float);
-  void SetDiffuseColor(float, float, float, float);
-  void SetDirection(float, float, float);
-  void SetPosition(float, float, float);
-  void SetSpecularColor(float, float, float, float);
+  void SetAmbientColor(const DirectX::XMFLOAT4&);
+  void SetDiffuseColor(const DirectX::XMFLOAT4&);
+  void SetDirection(const DirectX::XMFLOAT3&);
+  void SetPosition(const DirectX::XMFLOAT3&);
+  void SetSpecularColor(const DirectX::XMFLOAT4&);
   void SetSpecularPower(float);  
 
 private:

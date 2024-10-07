@@ -338,7 +338,7 @@ void LightShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, 
 }
 
 bool LightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
-  ID3D11ShaderResourceView* texture, const XMFLOAT4 diffuseColor[], const XMFLOAT4 lightPosition[])
+  ID3D11ShaderResourceView* texture, const vector<XMFLOAT4>& diffuseColor, const vector<XMFLOAT4>& lightPosition)
 {
   bool result;
 
@@ -394,7 +394,7 @@ void LightShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCoun
 }
 
 bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
-  ID3D11ShaderResourceView* texture, const XMFLOAT4 diffuseColor[], const XMFLOAT4 lightPosition[])
+  ID3D11ShaderResourceView* texture, const vector<XMFLOAT4>& diffuseColor, const vector<XMFLOAT4>& lightPosition)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;

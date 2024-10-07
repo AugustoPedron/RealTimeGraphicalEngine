@@ -14,7 +14,7 @@ public:
   D3DHandler(const D3DHandler&);
   ~D3DHandler();
 
-  bool Initialize(int, int, bool, HWND, bool, float, float);
+  bool Initialize(long, long, bool, HWND, bool, float, float);
   void Shutdown();
 
   void BeginScene(float, float, float, float);
@@ -23,18 +23,22 @@ public:
   ID3D11Device* GetDevice();
   ID3D11DeviceContext* GetDeviceContext();
 
-  void GetProjectionMatrix(DirectX::XMMATRIX&);
-  void GetWorldMatrix(DirectX::XMMATRIX&);
   void GetOrthoMatrix(DirectX::XMMATRIX&);
-
+  void GetProjectionMatrix(DirectX::XMMATRIX&);
+  long GetScreenHeight();
+  long GetScreenWidth();  
   void GetVideoCardInfo(char*, int&);
+  void GetWorldMatrix(DirectX::XMMATRIX&);
 
-  void SetBackBufferRenderTarget();
   void ResetViewport();
+  void SetBackBufferRenderTarget();  
+
+  void TurnZBufferOn();
+  void TurnZBufferOff();
 
 private:
   bool m_vsync_enabled;
-  int m_videoCardMemory;
+  long m_videoCardMemory, m_screenWidth, m_screenHeight;
   char m_videoCardDescription[128];
   IDXGISwapChain* m_swapChain;
   ID3D11Device* m_device;
@@ -43,9 +47,10 @@ private:
   ID3D11Texture2D* m_depthStencilBuffer;
   ID3D11DepthStencilState* m_depthStencilState;
   ID3D11DepthStencilView* m_depthStencilView;
+  ID3D11DepthStencilState* m_depthDisabledStencilState;
   ID3D11RasterizerState* m_rasterState;
+  D3D11_VIEWPORT m_viewport;
   DirectX::XMMATRIX m_projectionMatrix;
   DirectX::XMMATRIX m_worldMatrix;
   DirectX::XMMATRIX m_orthoMatrix;
-  D3D11_VIEWPORT m_viewport;
 };

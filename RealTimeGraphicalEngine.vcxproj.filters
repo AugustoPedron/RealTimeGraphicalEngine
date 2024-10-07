@@ -51,6 +51,18 @@
     <ClCompile Include="src\D3DRendering\LightShader.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\Scene.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\BitMap.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\Sprite.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Timer.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\System\System.hpp">
@@ -84,6 +96,18 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="include\Lighting\Light.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\Scene.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture\BitMap.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture\Sprite.hpp">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Timer.hpp">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
@@ -123,5 +147,25 @@
     <Text Include="data\models\Plane.txt">
       <Filter>File di risorse</Filter>
     </Text>
+    <Text Include="data\sprite\sprite_data_01.txt">
+      <Filter>File di risorse</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\texture\stone01.tga">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="data\sprite\sprite01.tga">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="data\sprite\sprite02.tga">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="data\sprite\sprite03.tga">
+      <Filter>File di risorse</Filter>
+    </Image>
+    <Image Include="data\sprite\sprite04.tga">
+      <Filter>File di risorse</Filter>
+    </Image>
   </ItemGroup>
 </Project>

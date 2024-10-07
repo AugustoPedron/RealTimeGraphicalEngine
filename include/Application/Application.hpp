@@ -3,12 +3,14 @@
 #include <memory>
 
 #include "Application/Camera.hpp"
+#include "Application/Scene.hpp"
 #include "D3DRendering/ColorShader.hpp"
 #include "D3DRendering/D3DHandler.hpp"
 #include "D3DRendering/LightShader.hpp"
 #include "D3DRendering/TextureShader.hpp"
 #include "Geometry/Model.hpp"
 #include "Lighting/Light.hpp"
+#include "System/Timer.hpp"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -27,15 +29,9 @@ public:
 	bool Frame();
 
 private:
-	bool Render(float);
+	bool Render(float, float);
 
-	std::unique_ptr<D3DHandler> m_D3DHandler;
-	std::unique_ptr<Camera> m_Camera;
-	std::unique_ptr<Model> m_Model;
-	std::unique_ptr<ColorShader> m_ColorShader;
-	std::unique_ptr<TextureShader> m_TextureShader;
-	std::unique_ptr<LightShader> m_LightShader;
-	std::unique_ptr<Light> m_Light;
-	std::vector<std::shared_ptr<Light>> m_Lights;
-	int m_numLights;
+	std::shared_ptr<D3DHandler> m_D3DHandler;
+	std::unique_ptr<Scene> m_scene;
+	std::unique_ptr<Timer> m_Timer;
 };

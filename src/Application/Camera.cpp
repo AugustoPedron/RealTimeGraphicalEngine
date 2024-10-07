@@ -4,13 +4,9 @@ using namespace DirectX;
 
 Camera::Camera()
 {
-	m_positionX = 0.0f;
-	m_positionY = 0.0f;
-	m_positionZ = 0.0f;
-
-	m_rotationX = 0.0f;
-	m_rotationY = 0.0f;
-	m_rotationZ = 0.0f;
+	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_viewMatrix = XMMatrixIdentity();
 }
 
 
@@ -25,13 +21,13 @@ Camera::~Camera()
 
 XMFLOAT3 Camera::GetPosition()
 {
-	return XMFLOAT3(m_positionX, m_positionY, m_positionZ);
+	return m_position;
 }
 
 
 XMFLOAT3 Camera::GetRotation()
 {
-	return XMFLOAT3(m_rotationX, m_rotationY, m_rotationZ);
+	return m_rotation;
 }
 
 void Camera::GetViewMatrix(XMMATRIX& viewMatrix)
@@ -42,7 +38,7 @@ void Camera::GetViewMatrix(XMMATRIX& viewMatrix)
 
 void Camera::Render()
 {
-	XMFLOAT3 up, position, lookAt;
+	XMFLOAT3 up, lookAt;
 	XMVECTOR upVector, positionVector, lookAtVector;
 	float yaw, pitch, roll;
 	XMMATRIX rotationMatrix;
@@ -56,13 +52,8 @@ void Camera::Render()
 	// Load it into a XMVECTOR structure.
 	upVector = XMLoadFloat3(&up);
 
-	// Setup the position of the camera in the world.
-	position.x = m_positionX;
-	position.y = m_positionY;
-	position.z = m_positionZ;
-
 	// Load it into a XMVECTOR structure.
-	positionVector = XMLoadFloat3(&position);
+	positionVector = XMLoadFloat3(&m_position);
 
 	// Setup where the camera is looking by default.
 	lookAt.x = 0.0f;
@@ -73,9 +64,9 @@ void Camera::Render()
 	lookAtVector = XMLoadFloat3(&lookAt);
 
 	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
-	pitch = m_rotationX * 0.0174532925f;
-	yaw = m_rotationY * 0.0174532925f;
-	roll = m_rotationZ * 0.0174532925f;
+	pitch = m_rotation.x * 0.0174532925f;
+	yaw = m_rotation.y * 0.0174532925f;
+	roll = m_rotation.z * 0.0174532925f;
 
 	// Create the rotation matrix from the yaw, pitch, and roll values.
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
@@ -93,19 +84,15 @@ void Camera::Render()
 	return;
 }
 
-void Camera::SetPosition(float x, float y, float z)
+void Camera::SetPosition(const XMFLOAT3& position)
 {
-	m_positionX = x;
-	m_positionY = y;
-	m_positionZ = z;
+	m_position = position;
 	return;
 }
 
 
-void Camera::SetRotation(float x, float y, float z)
+void Camera::SetRotation(const DirectX::XMFLOAT3& rotation)
 {
-	m_rotationX = x;
-	m_rotationY = y;
-	m_rotationZ = z;
+	m_rotation = rotation;
 	return;
 }

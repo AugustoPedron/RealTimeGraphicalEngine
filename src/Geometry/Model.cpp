@@ -44,7 +44,7 @@ bool Model::Initialize(ID3D11Device* device)
 	return true;
 }
 
-bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename)
+bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* textureFilename)
 {
 	bool result;
 
@@ -65,7 +65,7 @@ bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext,
 	return true;
 }
 
-bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* modelFilename, char* textureFilename)
+bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* modelFilename, const char* textureFilename)
 {
 	bool result;
 
@@ -175,12 +175,13 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 	return true;
 }
 
-bool Model::LoadModel(char* filename)
+bool Model::LoadModel(const char* filename)
 {
 	ifstream fin;
 	char input;
 	int i;
 
+	m_modelFilename = string(filename);
 
 	// Open the model file.
 	fin.open(filename);
@@ -230,9 +231,11 @@ bool Model::LoadModel(char* filename)
 	return true;
 }
 
-bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* filename)
 {
 	bool result;
+
+	m_textureFilename = string(filename);
 
 	// Create and initialize the texture object.
 	m_texture = make_unique<Texture>();
